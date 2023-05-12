@@ -1,0 +1,149 @@
+
+#define PIN_A 12
+#define PIN_B 13
+#define PIN_C 7
+#define PIN_D 8
+#define PIN_E 9
+#define PIN_F 11
+#define PIN_G 10
+
+#define TIEMPO 500
+
+#define BOTON A2
+#define BUZZER A0
+
+#define LED_UNO 6
+#define LED_DOS 5
+#define LED_TRES 4
+#define LED_CUATRO 3
+
+bool prendido;
+int contador;
+
+int si = 987; 
+int la = 880;
+int sol = 830;
+int fa = 698;
+
+int duracion = 250;
+
+void EnciendeApagaLed(int led);
+
+void setup()
+{
+  pinMode(LED_UNO, OUTPUT);
+  pinMode(LED_DOS, OUTPUT);  
+  pinMode(LED_TRES, OUTPUT);
+  pinMode(LED_CUATRO, OUTPUT);
+  
+  pinMode(PIN_A, OUTPUT);   
+  pinMode(PIN_B, OUTPUT);  
+  pinMode(PIN_C, OUTPUT);  
+  pinMode(PIN_D, OUTPUT);  
+  pinMode(PIN_E, OUTPUT);  
+  pinMode(PIN_F, OUTPUT);  
+  pinMode(PIN_G, OUTPUT);    
+  
+  pinMode(BUZZER, OUTPUT);  
+
+  pinMode(BOTON, INPUT_PULLUP);
+   
+  prendido = false;
+  contador = 3;
+  
+  Serial.begin(9600);
+
+}
+
+void loop()
+{
+  int apretoBoton;
+  apretoBoton = digitalRead(BOTON);
+    
+  if (apretoBoton == LOW)
+  {
+    prendido = true;
+  }
+  
+  if (prendido == true)
+  {
+    
+    switch(contador)
+    {
+      case 0: 
+      	  Serial.println("ESTACION: CONSTITUCION");
+          digitalWrite(PIN_A, HIGH);   
+          digitalWrite(PIN_B, HIGH);  
+          digitalWrite(PIN_C, HIGH);  
+          digitalWrite(PIN_D, HIGH);
+          digitalWrite(PIN_E, HIGH);  
+          digitalWrite(PIN_F, HIGH);
+          Serial.println("Suena buzzer");
+      	  tone(BUZZER, 220);
+          EnciendeApagaLed(LED_UNO);
+      	  noTone(BUZZER);
+          break;
+      case 1:
+          Serial.println("ESTACION: SAN JUAN");
+          digitalWrite(PIN_B, HIGH);  
+          digitalWrite(PIN_C, HIGH);
+      	  Serial.println("Suena buzzer");
+      	  tone(BUZZER, 100);
+          EnciendeApagaLed(LED_DOS);
+      	  noTone(BUZZER);
+          break;
+      case 2: 
+      	  Serial.println("ESTACION: INDEPENDENCIA");
+          digitalWrite(PIN_A, HIGH);   
+          digitalWrite(PIN_B, HIGH);  
+          digitalWrite(PIN_D, HIGH);
+          digitalWrite(PIN_E, HIGH);  
+          digitalWrite(PIN_G, HIGH);
+      	  Serial.println("Suena buzzer");
+      	  tone(BUZZER, 150);
+     	    EnciendeApagaLed(LED_TRES);
+      	  noTone(BUZZER);
+          break;
+      default:
+      	  Serial.println("ESTACION: MORENO");      	
+          digitalWrite(PIN_A, HIGH);   
+          digitalWrite(PIN_B, HIGH);  
+          digitalWrite(PIN_C, HIGH);  
+          digitalWrite(PIN_D, HIGH);
+          digitalWrite(PIN_G, HIGH);
+   		    Serial.println("Suena buzzer");
+      	  tone(BUZZER, 130);
+     	    EnciendeApagaLed(LED_CUATRO);
+      	  noTone(BUZZER);
+          break;
+    }
+    
+    contador--;
+  } 
+  
+  if(contador == -1)
+    contador = 3;
+  
+  delay(1000);
+  
+  digitalWrite(PIN_A, LOW);   
+  digitalWrite(PIN_B, LOW);  
+  digitalWrite(PIN_C, LOW);  
+  digitalWrite(PIN_D, LOW);
+  digitalWrite(PIN_E, LOW);  
+  digitalWrite(PIN_F, LOW);        
+  digitalWrite(PIN_G, LOW);
+  
+}
+
+
+void EnciendeApagaLed(int led)
+{
+  
+  digitalWrite(led, HIGH);
+  delay(TIEMPO); 
+  digitalWrite(led, LOW);
+  delay(TIEMPO); 
+}
+
+
